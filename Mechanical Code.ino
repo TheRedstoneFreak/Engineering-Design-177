@@ -7,6 +7,10 @@ bool btnRightPressed = false;
 bool btnLeftPressed = false;
 bool btnSelectPressed = false;
 
+// Tijd in ms wanneer hij voor het laatst is geopend
+int lastOpened = 0;
+int lastClosed = 0;
+
 enum Buttons { 
   UP, 
   DOWN, 
@@ -94,9 +98,17 @@ void setupMotor() {
   //const int voltSelect = 850;
   
   //Variables for the logic of opening and closing the cabinet.
+  bool isOpen = false;
   bool cabClosed = true;
   bool cabOpen = false;
+  bool closingCondition = false;
   int mechanicalErrorDelay = 5000; //in ms
+}
+void stepOpen(){
+  stepper1.step(2048);
+}
+void stepClose(){
+  stepper1.step(-2048);
 }
 
 //Function to set up the sensor.
@@ -124,11 +136,6 @@ void setupScreenAndButtons() {
 The following functions determine if a mechanical action should be taken.
 */
 
-//Function to check if the fridge door has just opened.
-bool fridgeJustOpened() {
-
-}
-
 //Function to detect sensor
 bool sensorDetection(){
   sensorVal = digitalRead(sensorPin);
@@ -137,8 +144,16 @@ bool sensorDetection(){
   } else {
     return false;
   }
+}
+
+//Function to check if the fridge door has just opened.
+bool fridgeJustOpened() {
 
 }
+
+
+
+
 //Function to check if there is a fruit that is almost expired.
 bool cabShouldOpen() {
 
@@ -146,12 +161,13 @@ bool cabShouldOpen() {
 
 //Function to check if the button to close the cabinet has been pressed.
 bool cabShouldClose() {
-
+  closingCondition = (btnSelectPressed || btnRightPressed); //aanpasbaar
+  return closingCondition;
 }
 
 //Function to check if the cabinet is moving.
 bool cabIsMoving() {
-
+  
 }
 
 
@@ -161,13 +177,14 @@ The following functions undertake mechanical action.
 
 //Function to open the cabinet.
 bool openCabinet() {
-
+  stepOpen();
 //if it didn't succeed:
   return false;
 }
 
 //Function to close the cabinet.
 bool closeCabinet() {
+  stepClose();
 //if it didn't succeed:
   return false;
 }
