@@ -128,6 +128,17 @@ The following functions determine if a mechanical action should be taken.
 bool fridgeJustOpened() {
 
 }
+
+//Function to detect sensor
+bool sensorDetection(){
+  sensorVal = digitalRead(sensorPin);
+  if (sensorVal == HIGH){
+    return true;
+  } else {
+    return false;
+  }
+
+}
 //Function to check if there is a fruit that is almost expired.
 bool cabShouldOpen() {
 
@@ -150,6 +161,7 @@ The following functions undertake mechanical action.
 
 //Function to open the cabinet.
 bool openCabinet() {
+
 //if it didn't succeed:
   return false;
 }
