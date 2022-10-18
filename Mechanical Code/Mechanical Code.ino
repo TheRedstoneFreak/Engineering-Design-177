@@ -21,42 +21,6 @@ enum Buttons {
 };
 Buttons Current_Button = NONE;
 
-// Begin Buttoncheck, vgm zodat het niet raar vastloopt -----------------------------------------------------------------------------------------------------------------------------------------------
-void ButtonCheck(uint16_t adc_value) {
-    // The ISR will trigger when button is pressed and when it is let-go
-    if (adc_value >= DFR_LCD_KEYPAD_KEY_NONE_ADC_LOW && adc_value <= DFR_LCD_KEYPAD_KEY_NONE_ADC_HIGH) 
-    { 
-      Current_Button = NONE; 
-    }
-    if (adc_value >= 0 && adc_value <= 20) 
-    { 
-      Current_Button = RIGHT; 
-      btnRightPressed = true;
-    }
-    if (adc_value >= 600 && adc_value <= 650)  //354 or 355
-    { 
-      Current_Button = LEFT;
-      btnLeftPressed = true;
-    }
-    if (adc_value >= 200 && adc_value <= 250) // 119 or 120
-    { 
-      Current_Button = UP;
-      btnUpPressed = true;
-    }
-    if (adc_value >= 400 && adc_value <= 450) //250 or 251
-    { 
-      Current_Button = DOWN;
-      btnDownPressed = true;
-    }
-    // not working
-    if (adc_value >= 800 && adc_value <= 850) 
-    { 
-      Current_Button = SELECT;
-      btnSelectPressed = true;
-    }
-}
-// Einde Buttoncheck -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-
 ISR(PCINT1_vect) {
    ButtonCheck(analogRead(0));
 }
@@ -203,7 +167,7 @@ bool cabShouldClose() {
 
 //Function to check if the cabinet is moving.
 bool cabIsMoving() {
-
+  
 }
 
 
