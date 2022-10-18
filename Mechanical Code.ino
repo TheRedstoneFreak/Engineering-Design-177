@@ -1,11 +1,43 @@
 #include <LiquidCrystal.h>
 #include <Stepper.h>
+// Om de knoppen te meten
+bool btnUpPressed = false;
+bool btnDownPressed = false;
+bool btnRightPressed = false;
+bool btnLeftPressed = false;
+bool btnSelectPressed = false;
+
+enum Buttons { 
+  UP, 
+  DOWN, 
+  RIGHT, 
+  LEFT, 
+  SELECT, 
+  NONE 
+};
+Buttons Current_Button = NONE;
+
+ISR(PCINT1_vect) {
+   ButtonCheck(analogRead(0));
+}
+
+// Pins van de motor
+#define A 3
+#define B 11
+#define C 12
+#define D 13
+
+// Pin van de sensor
+int sensorPin = 2;
+// Zet de pirstate op LOW, aannemend dat er geen beweging is gedetecteerd wanneer de PIR start.
+int pirState = LOW;
+// Een variabele voor de pinstatus van de PIR.
+int sensorVal = 0;
 
 void setup() {
   setupMotor();
   setupSensor();
   setupScreenAndButtons();
-  Serial.begin(9600); //voor als je zooi naar je laptop wil sturen
 }
 
 void loop() {
@@ -55,18 +87,12 @@ void setupMotor() {
   //example: if you press down the volt sent will be ~420 but in your code 
   //you need to check if your volt is less than voltdown but greater than voltup
   //experimentally obtained, might differ in final product:
-  const int voltRight = 60;
-  const int voltUp = 250;
-  const int voltDown = 450;
-  const int voltLeft = 650;
-  const int voltSelect = 850;
-  //Next two functions are useless
-  void write(int a,int b,int c,int d){ //van een website maar snap niet wat ie doet en is niet nodig vgm
-  digitalWrite(A,a);
-  digitalWrite(B,b);
-  digitalWrite(C,c);
-  digitalWrite(D,d);
-
+  //const int voltRight = 60;
+  //const int voltUp = 250;
+  //const int voltDown = 450;
+  //const int voltLeft = 650;
+  //const int voltSelect = 850;
+  
   //Variables for the logic of opening and closing the cabinet.
   bool cabClosed = true;
   bool cabOpen = false;
@@ -75,7 +101,7 @@ void setupMotor() {
 
 //Function to set up the sensor.
 void setupSensor() {
-  pinMode(inputPin, INPUT); //Hiermee kan de sensor inputten
+  pinMode(sensorPin, INPUT); //Hiermee kan de sensor inputten
 }
 
 //Function to set up the screen and buttons.
@@ -88,13 +114,6 @@ void setupScreenAndButtons() {
   const int pin_d6 = 6;
   const int pin_d7 = 7;
   const int pin_BL = 10;
-  // Configureer de INPUT pin van de PIR.
-  int inputPin = 2;
-  // Zet de pirstate op LOW, aannemend dat er geen beweging is gedetecteerd 
-  wanneer de PIR start.
-  int pirState = LOW;
-  // Een variabele voor de pinstatus van de PIR.
-  int val = 0;
   LiquidCrystal lcd( pin_RS,  pin_EN,  pin_d4,  pin_d5,  pin_d6,  pin_d7);
   lcd.begin(16, 2); //16x2 display
   lcd.setCursor(0,0);
