@@ -3,6 +3,9 @@
 
 #include <LiquidCrystal.h>
 #include <DFR_LCD_Keypad.h>
+#include<iostream>
+#include<map>
+#include<string>
 
 #define JUMPING_GAME 1
 #define PLAYING_MUSIC 2
@@ -28,6 +31,45 @@ bool btnDownPressed = false;
 bool btnRightPressed = false;
 bool btnLeftPressed = false;
 bool btnSelectPressed = false;
+
+int main(){
+   
+   map<string, int> food;
+   food["Apples"] = 30; //days
+   food["Asparagus"] = 4;
+   food["Avocadoes"] = 3;
+   food["Beans"] = 5;
+   food["Berries"] = 3;
+   food["Broccoli"] = 6;
+   food["Carrots"] = 80;
+   food["Capsicum"] = 12;
+   food["Cauliflower"] = 12;
+   food["Celery"] = 25;
+   food["Corn"] = 3;
+   food["Citrus"] = 16;
+   food["Cucumber"] = 11;
+   food["Eggplant"] = 11;
+   food["Lettuce"] = 11;
+   food["Kiwi"] = 7;
+   food["Mushrooms"] = 11;
+   food["Onions"] = 80;
+   food["Peaches"] = 3;
+   food["Pears"] = 14;
+   food["Peas"] = 6;
+   food["Strawberries"] = 3;
+   food["Tomatoes"] = 6;
+   
+    map <string,int> :: iterator iter;
+   cout<<"keys"<<"  &  "<<"values"<<endl;
+   for (iter = food.begin(); iter != food.end(); iter++)
+   {
+     cout << (*iter).first << "    " << (*iter).second << " days \n";
+   }
+    cout << "Hello world";
+    return 0;
+
+    }
+
 
 enum Buttons { 
   UP, 
