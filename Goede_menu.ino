@@ -354,6 +354,26 @@ void food_data() {
   
 }
 
+void start_timer() {
+ unsigned long start_time = millis();
+ return start_time;
+}
+
+void check_timer() {
+  if 
+} 
+
+bool timer_done() { //Moet nog iets komen waardoor ik een totale tijd van een product kan krijgen (product in bool)
+  unsigned long start_time = start_timer();
+  //unsigned long total_time = 
+  unsigned long current_time = get_current_time();
+  time_in_fridge = 
+}
+
+void get_current_time() {
+  unsigned long current_time = millis();
+  return current_time    
+}
 
 // Begin Buttoncheck, vgm zodat het niet raar vastloopt -----------------------------------------------------------------------------------------------------------------------------------------------
 void ButtonCheck(uint16_t adc_value) {
