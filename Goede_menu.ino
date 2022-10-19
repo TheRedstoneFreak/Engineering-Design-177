@@ -396,20 +396,28 @@ void food_data() {
   
 }
 
-void start_timer() {
+void start_timer(product) { //dit moet bij product komen maar kan dan met get_current time
  unsigned long start_time = millis();
  return start_time;
 }
 
 void check_timer() {
-  if 
+  if (timer_done == true) {
+     //Hier wat er gebeurt wanneer de timer voorbij is
+  }
 } 
 
-bool timer_done() { //Moet nog iets komen waardoor ik een totale tijd van een product kan krijgen (product in bool)
+bool timer_done() { // Returns true als de tijd voorbij is
+   //Moet nog iets komen waardoor ik een totale tijd van een product kan krijgen (product in bool)
   unsigned long start_time = start_timer();
   //unsigned long total_time = 
   unsigned long current_time = get_current_time();
-  time_in_fridge = 
+  time_in_fridge = start_time - current_time;
+  if (time_in_fridge >= total_time) {
+     return true
+     } else {
+     return false
+     }
 }
 
 void get_current_time() {
