@@ -122,17 +122,20 @@ void loop()
       food_data();
       break;
   }
-   if (compartment["Apple"] <= get_current_time()) {
+   
+   map <string,int> :: iterator iter;
+   for (iter = compartment.begin(); iter != compartment.end(); iter++)
+   {
+    if ((*iter).second <= get_current_time()) {
       lcd.setCursor(0,0);
-      lcd.print("Apple"); 
+      lcd.print((*iter).first); 
       lcd.setCursor(0,1);
       lcd.print("Out of date >");
       delay(500);
    }
+   
+   }
 }
-
-// // compartment["Apple"] == millis()
-        // if (compartment["Apple"] => get_current_time() ) {
          
          
       } 
