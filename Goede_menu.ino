@@ -363,7 +363,7 @@ void fruit_menu() {
 //Vegetable menu add
 
 void vegetable_menu() {
-  if (selection_list > 2 || selection_list < 1) { //Aanpassen naar hoeveel cases er zijn
+  if (selection_list > 14 || selection_list < 1) { //Aanpassen naar hoeveel cases er zijn
     selection_list == 1;
   }
   if (btnRightPressed) {
