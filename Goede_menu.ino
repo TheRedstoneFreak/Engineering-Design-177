@@ -136,6 +136,14 @@ void loop()
       }
        compartment.erase((*iter).first)
    }
+      if ((*iter).second - 86 400 000 <= get_current_time()) { #1 dag
+      while (noBtnPressed) {
+      lcd.setCursor(0,0);
+      lcd.print((*iter).first); 
+      lcd.setCursor(0,1);
+      lcd.print("1 day left >");
+      delay(500);
+      }
    
    }
 }
