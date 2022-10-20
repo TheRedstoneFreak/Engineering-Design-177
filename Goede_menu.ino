@@ -125,6 +125,11 @@ void loop()
   }
 }
 
+// // compartment["Apple"] == millis()
+        // if (compartment["Apple"] => get_current_time() ) {
+         
+         
+      } 
 //Eind setup en loop -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 //Het eerste menu aka main menu --------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -261,7 +266,11 @@ void fruit_menu() {
         //add_fruit(selection_list);
         btnSelectPressed = false;
         finalChoice = true;
-      } 
+        unsigned long current_time = millis();
+        unsigned long start_time = get_current_time();
+        unsigned long time_left = 30 * 86400000;
+        compartment["Apple"] = start_time + time_left;
+        
       break;
         
      case 2:
@@ -274,6 +283,10 @@ void fruit_menu() {
         //add_fruit(selection_list)
         btnSelectPressed = false;
         finalChoice = true;
+        unsigned long current_time = millis();
+        unsigned long start_time = get_current_time();
+        unsigned long time_left = 3 * 86400000;
+        compartment["Avocado"] = start_time + time_left;
       }
       break;
         
@@ -287,6 +300,10 @@ void fruit_menu() {
         //add_fruit(selection_list)
         btnSelectPressed = false;
         finalChoice = true;
+        unsigned long current_time = millis();
+        unsigned long start_time = get_current_time();
+        unsigned long time_left = 3 * 86400000;
+        compartment["Berries"] = start_time + time_left;
       }
       break;
         
@@ -300,6 +317,10 @@ void fruit_menu() {
         //add_fruit(selection_list)
         btnSelectPressed = false;
         finalChoice = true;
+        unsigned long current_time = millis();
+        unsigned long start_time = get_current_time();
+        unsigned long time_left = 16 * 86400000;
+        compartment["Citrus"] = start_time + time_left;
       }
       break;
         
@@ -313,6 +334,10 @@ void fruit_menu() {
         //add_fruit(selection_list)
         btnSelectPressed = false;
         finalChoice = true;
+        unsigned long current_time = millis();
+        unsigned long start_time = get_current_time();
+        unsigned long time_left = 7 * 86400000;
+        compartment["Kiwi fruit"] = start_time + time_left;
       }
       break;
         
@@ -326,6 +351,10 @@ void fruit_menu() {
         //add_fruit(selection_list)
         btnSelectPressed = false;
         finalChoice = true;
+        unsigned long current_time = millis();
+        unsigned long start_time = get_current_time();
+        unsigned long time_left = 3 * 86400000;
+        compartment["Peaches"] = start_time + time_left;
       }
       break;
         
@@ -339,6 +368,10 @@ void fruit_menu() {
         //add_fruit(selection_list)
         btnSelectPressed = false;
         finalChoice = true;
+        unsigned long current_time = millis();
+        unsigned long start_time = get_current_time();
+        unsigned long time_left = 14 * 86400000;
+        compartment["Pears"] = start_time + time_left;
       }
       break;
         
@@ -352,6 +385,10 @@ void fruit_menu() {
         //add_fruit(selection_list)
         btnSelectPressed = false;
         finalChoice = true;
+        unsigned long current_time = millis();
+        unsigned long start_time = get_current_time();
+        unsigned long time_left = 3 * 86400000;
+        compartment["Strawberries"] = start_time + time_left;
       }
       break;
         
@@ -386,6 +423,10 @@ void vegetable_menu() {
         //add_vegetable(selection_list);
         btnSelectPressed = false;
         finalChoice = true;
+        unsigned long current_time = millis();
+        unsigned long start_time = get_current_time();
+        unsigned long time_left = 4 * 86400000;
+        compartment["Asparagus"] = start_time + time_left;
       } 
       break;
     case 2:
@@ -398,6 +439,10 @@ void vegetable_menu() {
         //add_vegetable(selection_list)
         btnSelectPressed = false;
         finalChoice = true;
+        unsigned long current_time = millis();
+        unsigned long start_time = get_current_time();
+        unsigned long time_left = 5 * 86400000;
+        compartment["Beans"] = start_time + time_left;
       }
       break; 
       
@@ -411,6 +456,10 @@ void vegetable_menu() {
         //add_vegetable(selection_list);
         btnSelectPressed = false;
         finalChoice = true;
+        unsigned long current_time = millis();
+        unsigned long start_time = get_current_time();
+        unsigned long time_left = 6 * 86400000;
+        compartment["Broccoli"] = start_time + time_left;
       } 
       break;
     case 4:
@@ -423,6 +472,10 @@ void vegetable_menu() {
         //add_vegetable(selection_list)
         btnSelectPressed = false;
         finalChoice = true;
+        unsigned long current_time = millis();
+        unsigned long start_time = get_current_time();
+        unsigned long time_left = 30 * 86400000;
+        compartment["Carrots"] = start_time + time_left;
       }
       break;
         
@@ -436,6 +489,10 @@ void vegetable_menu() {
         //add_vegetable(selection_list);
         btnSelectPressed = false;
         finalChoice = true;
+        unsigned long current_time = millis();
+        unsigned long start_time = get_current_time();
+        unsigned long time_left = 12 * 86400000;
+        compartment["Capsicum"] = start_time + time_left;
       } 
       break;
     case 6:
@@ -448,6 +505,11 @@ void vegetable_menu() {
         //add_vegetable(selection_list)
         btnSelectPressed = false;
         finalChoice = true;
+        unsigned long current_time = millis();
+        unsigned long start_time = get_current_time();
+        unsigned long time_left = 12 * 86400000;
+        compartment["Cauliflower"] = start_time + time_left;
+        
       }
       break;
         
@@ -461,6 +523,11 @@ void vegetable_menu() {
         //add_vegetable(selection_list);
         btnSelectPressed = false;
         finalChoice = true;
+        unsigned long current_time = millis();
+        unsigned long start_time = get_current_time();
+        unsigned long time_left = 25 * 86400000;
+        compartment["Celery"] = start_time + time_left;
+         
       } 
       break;
     case 8:
@@ -473,6 +540,10 @@ void vegetable_menu() {
         //add_vegetable(selection_list)
         btnSelectPressed = false;
         finalChoice = true;
+        unsigned long current_time = millis();
+        unsigned long start_time = get_current_time();
+        unsigned long time_left = 3 * 86400000;
+        compartment["Corn"] = start_time + time_left;
       }
       break;
 
@@ -486,6 +557,10 @@ void vegetable_menu() {
         //add_vegetable(selection_list)
         btnSelectPressed = false;
         finalChoice = true;
+        unsigned long current_time = millis();
+        unsigned long start_time = get_current_time();
+        unsigned long time_left = 11 * 86400000;
+        compartment["Cucumber"] = start_time + time_left;
       }
       break; 
       
@@ -499,6 +574,11 @@ void vegetable_menu() {
         //add_vegetable(selection_list);
         btnSelectPressed = false;
         finalChoice = true;
+        unsigned long current_time = millis();
+        unsigned long start_time = get_current_time();
+        unsigned long time_left = 11 * 86400000;
+        compartment["Eggplant"] = start_time + time_left;
+        
       } 
       break;
     case 11:
@@ -511,6 +591,10 @@ void vegetable_menu() {
         //add_vegetable(selection_list)
         btnSelectPressed = false;
         finalChoice = true;
+        unsigned long current_time = millis();
+        unsigned long start_time = get_current_time();
+        unsigned long time_left = 11 * 86400000;
+        compartment["Lettuce"] = start_time + time_left;
       }
       break;
         
@@ -524,6 +608,10 @@ void vegetable_menu() {
         //add_vegetable(selection_list);
         btnSelectPressed = false;
         finalChoice = true;
+        unsigned long current_time = millis();
+        unsigned long start_time = get_current_time();
+        unsigned long time_left = 11 * 86400000;
+        compartment["Mushrooms"] = start_time + time_left;
       } 
       break;
     case 13:
@@ -536,6 +624,10 @@ void vegetable_menu() {
         //add_vegetable(selection_list)
         btnSelectPressed = false;
         finalChoice = true;
+        unsigned long current_time = millis();
+        unsigned long start_time = get_current_time();
+        unsigned long time_left = 6 * 86400000;
+        compartment["Peas"] = start_time + time_left;
       }
       break;
         
@@ -549,6 +641,11 @@ void vegetable_menu() {
         //add_vegetable(selection_list);
         btnSelectPressed = false;
         finalChoice = true;
+        unsigned long current_time = millis();
+        unsigned long start_time = get_current_time();
+        unsigned long time_left = 6 * 86400000;
+        compartment["Tomatoes"] = start_time + time_left;
+
       } 
       break;
    
