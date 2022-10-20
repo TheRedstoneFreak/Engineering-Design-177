@@ -127,11 +127,13 @@ void loop()
    for (iter = compartment.begin(); iter != compartment.end(); iter++)
    {
     if ((*iter).second <= get_current_time()) {
+      while (noBtnPressed) {
       lcd.setCursor(0,0);
       lcd.print((*iter).first); 
       lcd.setCursor(0,1);
       lcd.print("Out of date >");
       delay(500);
+      }
    }
    
    }
@@ -765,7 +767,8 @@ void ButtonCheck(uint16_t adc_value) {
     // The ISR will trigger when button is pressed and when it is let-go
     if (adc_value >= DFR_LCD_KEYPAD_KEY_NONE_ADC_LOW && adc_value <= DFR_LCD_KEYPAD_KEY_NONE_ADC_HIGH) 
     { 
-      Current_Button = NONE; 
+      Current_Button = NONE;
+      noBtnPressed = true;
     }
     if (adc_value >= 0 && adc_value <= 20) 
     { 
