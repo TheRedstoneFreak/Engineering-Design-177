@@ -32,9 +32,7 @@ bool btnRightPressed = false;
 bool btnLeftPressed = false;
 bool btnSelectPressed = false;
 
-int main(){
-   
-   map<string, int> food;
+map<string, int> food;
    food["Apples"] = 30; //days
    food["Asparagus"] = 4;
    food["Avocadoes"] = 3;
@@ -58,18 +56,8 @@ int main(){
    food["Peas"] = 6;
    food["Strawberries"] = 3;
    food["Tomatoes"] = 6;
-   
-    map <string,int> :: iterator iter;
-   cout<<"keys"<<"  &  "<<"values"<<endl;
-   for (iter = food.begin(); iter != food.end(); iter++)
-   {
-     cout << (*iter).first << "    " << (*iter).second << " days \n";
-   }
-    cout << "Hello world";
-    return 0;
 
-    }
-
+int main(){
 
 enum Buttons { 
   UP, 
@@ -393,6 +381,16 @@ void current_product(int selectionlist) { // opens current product from list
 
 // Data van food inzien -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 void food_data() {
+   for (iter = food.begin(); iter != food.end(); iter++)
+   {
+     cout << ">" <<(*iter).first << "\n";
+     cout << " " << (*iter).second << " days \n";
+    
+   }
+    cout << food.begin()->first;
+    return 0;
+
+    }
   
 }
 
