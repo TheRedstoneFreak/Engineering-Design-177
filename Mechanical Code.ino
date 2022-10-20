@@ -213,7 +213,7 @@ bool fridgeJustOpened() {
 //Function to check if there is a fruit that is almost expired.
 bool cabShouldOpen() {
   OpeningCondition = (sensorDetection() && !isOpen);
-  return OpeningCondition
+  return OpeningCondition;
 }
 
 //Function to check if the button to close the cabinet has been pressed.
@@ -249,6 +249,26 @@ bool closeCabinet() {
 //if it didn't succeed:
   return false;
 }
+
+bool menuShouldOpen() {
+  menuOpenCondition = (isOpen && !menuOpen && btnSelectPressed);
+  return menuOpenCondition;
+}
+
+bool menuShouldClose() {
+  menuClosingCondition = (menuOpen && btnDownPressed); //hier moet wss nog iets bij gebaseerd op welk scherm het menu is
+  return menuClosingCondition;
+}
+
+void openMenu() {
+  menuOpen = true;
+  //het menu
+}
+
+void CloseMenu() {
+  menuOpen = false;
+}
+
 
 //Function to try to close the cabinet every few seconds
 void mechanicalError() {
