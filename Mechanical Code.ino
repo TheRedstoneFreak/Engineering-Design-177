@@ -1,5 +1,6 @@
 #include <LiquidCrystal.h>
 #include <Stepper.h>
+#include <DFR_LCD_Keypad.h>
 // Om de knoppen te meten
 bool btnUpPressed = false;
 bool btnDownPressed = false;
@@ -81,24 +82,42 @@ void setup() {
 }
 
 void loop() {
-  //opens the cabinet when needed.
-  if frideJustOpened() {
-    if cabShouldOpen() {
-    if !openCabinet() {
-      if testMechanicalError() {
-        mechanicalError();
-      }
+  if cabShouldOpen() {
+    if openCabinet(){
+      mechanicalError();
     }
+  }
+  if cabShouldClose(){
+    if closeCabinet(){
+      mechanicalError();
+    }
+  }
+  if menuShouldOpen(){
+    openMenu();
+  }
+  if menuShouldClose(){
+    closeMenu();
   }
 
+  // Heb deze eruit gecomment want die kloppen net niet meer nu we niet weten of er een error is
+  //opens the cabinet when needed.
+  //if frideJustOpened() {
+  //  if cabShouldOpen() {
+  //  if !openCabinet() {
+  //    if testMechanicalError() {
+  //      mechanicalError();
+  //    }
+  //  }
+  //}
+
   //closes the cabinet when needed
-  if cabShouldClose() {
-    if !closeCabinet() {
-      if testMechanicalError() {
-        mechanicalError();
-      }
-    }
-  }
+  //if cabShouldClose() {
+  //  if !closeCabinet() {
+  //    if testMechanicalError() {
+  //      mechanicalError();
+  //    }
+  //  }
+  //}
 
   //The rest should contain functions to controll the display, database and time.
 
@@ -134,6 +153,7 @@ void setupMotor() {
   //const int voltSelect = 850;
   
   //Variables for the logic of opening and closing the cabinet.
+  bool menuOpen = false;
   bool isOpen = false;
   bool cabClosed = true;
   bool cabOpen = false;
@@ -192,12 +212,13 @@ bool fridgeJustOpened() {
 
 //Function to check if there is a fruit that is almost expired.
 bool cabShouldOpen() {
-
+  OpeningCondition = (sensorDetection() && !isOpen);
+  return OpeningCondition
 }
 
 //Function to check if the button to close the cabinet has been pressed.
 bool cabShouldClose() {
-  closingCondition = (btnSelectPressed || btnRightPressed); //aanpasbaar
+  closingCondition = (btnDownPressed && !menuOpen && isOpen); //aanpasbaar
   return closingCondition;
 }
 
@@ -213,7 +234,9 @@ The following functions undertake mechanical action.
 
 //Function to open the cabinet.
 bool openCabinet() {
+  isOpen = true;
   stepOpen();
+  lastOpened = millis();
 //if it didn't succeed:
   return false;
 }
@@ -221,6 +244,8 @@ bool openCabinet() {
 //Function to close the cabinet.
 bool closeCabinet() {
   stepClose();
+  lastClosed = millis();
+  isOpen = false;
 //if it didn't succeed:
   return false;
 }
