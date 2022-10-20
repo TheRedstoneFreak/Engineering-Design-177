@@ -123,6 +123,9 @@ void loop()
       food_data();
       break;
   }
+   if (compartment["Apple"] <= get_current_time()) {
+      pass
+   }
 }
 
 // // compartment["Apple"] == millis()
