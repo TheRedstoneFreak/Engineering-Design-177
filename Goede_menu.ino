@@ -238,7 +238,7 @@ void add_menu() {
 //Fruit menu
 
 void fruit_menu() {
-  if (selection_list > 2 || selection_list < 1) { //Aanpassen naar hoeveel cases er zijn
+  if (selection_list > 8 || selection_list < 1) { //Aanpassen naar hoeveel cases er zijn
     selection_list == 1;
   }
   if (btnRightPressed) {
@@ -263,18 +263,98 @@ void fruit_menu() {
         finalChoice = true;
       } 
       break;
-    case 2:
+        
+     case 2:
       lcd.setCursor(0,0);
       lcd.print("Select fruit");
       lcd.setCursor(0,1);
-      lcd.print("<  Banana   >");
+      lcd.print("<  Avocado  >");
       delay(500);
       if(btnSelectPressed) {
         //add_fruit(selection_list)
         btnSelectPressed = false;
         finalChoice = true;
       }
-      break; 
+      break;
+        
+      case 3:
+      lcd.setCursor(0,0);
+      lcd.print("Select fruit");
+      lcd.setCursor(0,1);
+      lcd.print("<   Berries    >");
+      delay(500);
+      if(btnSelectPressed) {
+        //add_fruit(selection_list)
+        btnSelectPressed = false;
+        finalChoice = true;
+      }
+      break;
+        
+      case 4:
+      lcd.setCursor(0,0);
+      lcd.print("Select fruit");
+      lcd.setCursor(0,1);
+      lcd.print("<    Citrus    >");
+      delay(500);
+      if(btnSelectPressed) {
+        //add_fruit(selection_list)
+        btnSelectPressed = false;
+        finalChoice = true;
+      }
+      break;
+        
+      case 5:
+      lcd.setCursor(0,0);
+      lcd.print("Select fruit");
+      lcd.setCursor(0,1);
+      lcd.print("<     Kiwi     >");
+      delay(500);
+      if(btnSelectPressed) {
+        //add_fruit(selection_list)
+        btnSelectPressed = false;
+        finalChoice = true;
+      }
+      break;
+        
+      case 6:
+      lcd.setCursor(0,0);
+      lcd.print("Select fruit");
+      lcd.setCursor(0,1);
+      lcd.print("<   Peaches    >");
+      delay(500);
+      if(btnSelectPressed) {
+        //add_fruit(selection_list)
+        btnSelectPressed = false;
+        finalChoice = true;
+      }
+      break;
+        
+      case 7:
+      lcd.setCursor(0,0);
+      lcd.print("Select fruit");
+      lcd.setCursor(0,1);
+      lcd.print("<    Pears     >");
+      delay(500);
+      if(btnSelectPressed) {
+        //add_fruit(selection_list)
+        btnSelectPressed = false;
+        finalChoice = true;
+      }
+      break;
+        
+      case 8:
+      lcd.setCursor(0,0);
+      lcd.print("Select fruit");
+      lcd.setCursor(0,1);
+      lcd.print("< Strawberries >");
+      delay(500);
+      if(btnSelectPressed) {
+        //add_fruit(selection_list)
+        btnSelectPressed = false;
+        finalChoice = true;
+      }
+      break;
+        
 
     default: selection_list = 1;
       break;
@@ -300,7 +380,7 @@ void vegetable_menu() {
       lcd.setCursor(0,0);
       lcd.print("Select vegetable");
       lcd.setCursor(0,1);
-      lcd.print("<   Broccoli   >");
+      lcd.print("<  Asparagus   >");
       delay(500);
       if(btnSelectPressed) { // hier de actie komen om toe te voegen aan list
         //add_vegetable(selection_list);
@@ -310,7 +390,57 @@ void vegetable_menu() {
       break;
     case 2:
       lcd.setCursor(0,0);
-      lcd.print("Select fruit");
+      lcd.print("Select vegetable");
+      lcd.setCursor(0,1);
+      lcd.print("<    Beans     >");
+      delay(500);
+      if(btnSelectPressed) {
+        //add_vegetable(selection_list)
+        btnSelectPressed = false;
+        finalChoice = true;
+      }
+      break; 
+      
+     case 3:
+      lcd.setCursor(0,0);
+      lcd.print("Select vegetable");
+      lcd.setCursor(0,1);
+      lcd.print("<   Broccoli   >");
+      delay(500);
+      if(btnSelectPressed) { // hier de actie komen om toe te voegen aan list
+        //add_vegetable(selection_list);
+        btnSelectPressed = false;
+        finalChoice = true;
+      } 
+      break;
+    case 4:
+      lcd.setCursor(0,0);
+      lcd.print("Select vegetable");
+      lcd.setCursor(0,1);
+      lcd.print("<   Carrots    >");
+      delay(500);
+      if(btnSelectPressed) {
+        //add_vegetable(selection_list)
+        btnSelectPressed = false;
+        finalChoice = true;
+      }
+      break;
+        
+      case 5:
+      lcd.setCursor(0,0);
+      lcd.print("Select vegetable");
+      lcd.setCursor(0,1);
+      lcd.print("<   Capsicum   >");
+      delay(500);
+      if(btnSelectPressed) { // hier de actie komen om toe te voegen aan list
+        //add_vegetable(selection_list);
+        btnSelectPressed = false;
+        finalChoice = true;
+      } 
+      break;
+    case 6:
+      lcd.setCursor(0,0);
+      lcd.print("Select vegetable");
       lcd.setCursor(0,1);
       lcd.print("< Cauliflower  >");
       delay(500);
@@ -319,8 +449,109 @@ void vegetable_menu() {
         btnSelectPressed = false;
         finalChoice = true;
       }
-      break; 
+      break;
+        
+     case 7:
+      lcd.setCursor(0,0);
+      lcd.print("Select vegetable");
+      lcd.setCursor(0,1);
+      lcd.print("<    Celery    >");
+      delay(500);
+      if(btnSelectPressed) { // hier de actie komen om toe te voegen aan list
+        //add_vegetable(selection_list);
+        btnSelectPressed = false;
+        finalChoice = true;
+      } 
+      break;
+    case 8:
+      lcd.setCursor(0,0);
+      lcd.print("Select vegetable");
+      lcd.setCursor(0,1);
+      lcd.print("<     Corn     >");
+      delay(500);
+      if(btnSelectPressed) {
+        //add_vegetable(selection_list)
+        btnSelectPressed = false;
+        finalChoice = true;
+      }
+      break;
 
+        case 9:
+      lcd.setCursor(0,0);
+      lcd.print("Select vegetable");
+      lcd.setCursor(0,1);
+      lcd.print("<   Cucumber   >");
+      delay(500);
+      if(btnSelectPressed) {
+        //add_vegetable(selection_list)
+        btnSelectPressed = false;
+        finalChoice = true;
+      }
+      break; 
+      
+     case 10:
+      lcd.setCursor(0,0);
+      lcd.print("Select vegetable");
+      lcd.setCursor(0,1);
+      lcd.print("<   Eggplant   >");
+      delay(500);
+      if(btnSelectPressed) { // hier de actie komen om toe te voegen aan list
+        //add_vegetable(selection_list);
+        btnSelectPressed = false;
+        finalChoice = true;
+      } 
+      break;
+    case 11:
+      lcd.setCursor(0,0);
+      lcd.print("Select vegetable");
+      lcd.setCursor(0,1);
+      lcd.print("<   Lettuce    >");
+      delay(500);
+      if(btnSelectPressed) {
+        //add_vegetable(selection_list)
+        btnSelectPressed = false;
+        finalChoice = true;
+      }
+      break;
+        
+      case 12:
+      lcd.setCursor(0,0);
+      lcd.print("Select vegetable");
+      lcd.setCursor(0,1);
+      lcd.print("<  Mushrooms   >");
+      delay(500);
+      if(btnSelectPressed) { // hier de actie komen om toe te voegen aan list
+        //add_vegetable(selection_list);
+        btnSelectPressed = false;
+        finalChoice = true;
+      } 
+      break;
+    case 13:
+      lcd.setCursor(0,0);
+      lcd.print("Select vegetable");
+      lcd.setCursor(0,1);
+      lcd.print("<     Peas     >");
+      delay(500);
+      if(btnSelectPressed) {
+        //add_vegetable(selection_list)
+        btnSelectPressed = false;
+        finalChoice = true;
+      }
+      break;
+        
+     case 14:
+      lcd.setCursor(0,0);
+      lcd.print("Select vegetable");
+      lcd.setCursor(0,1);
+      lcd.print("<   Tomatoes   >");
+      delay(500);
+      if(btnSelectPressed) { // hier de actie komen om toe te voegen aan list
+        //add_vegetable(selection_list);
+        btnSelectPressed = false;
+        finalChoice = true;
+      } 
+      break;
+   
     default: selection_list = 1;
       break;
   }
