@@ -134,6 +134,7 @@ void loop()
       lcd.print("Out of date >");
       delay(500);
       }
+       compartment.erase((*iter).first)
    }
    
    }
