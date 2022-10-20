@@ -57,7 +57,6 @@ map<string, int> food;
    food["Strawberries"] = 3;
    food["Tomatoes"] = 6;
 
-int main(){
 
 enum Buttons { 
   UP, 
@@ -124,7 +123,11 @@ void loop()
       break;
   }
    if (compartment["Apple"] <= get_current_time()) {
-      pass
+      lcd.setCursor(0,0);
+      lcd.print("Apple"); 
+      lcd.setCursor(0,1);
+      lcd.print("Out of date >");
+      delay(500);
    }
 }
 
