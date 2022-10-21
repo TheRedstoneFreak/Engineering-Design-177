@@ -7,10 +7,11 @@ bool btnDownPressed = false;
 bool btnRightPressed = false;
 bool btnLeftPressed = false;
 bool btnSelectPressed = false;
+bool sensorBool = true;
 
 // Tijd in ms wanneer hij voor het laatst is geopend
 int lastOpened = 0;
-int lastClosed = 0;
+int lastClosed = -60000;
 
 enum Buttons { 
   UP, 
@@ -55,6 +56,10 @@ void ButtonCheck(uint16_t adc_value) {
       Current_Button = SELECT;
       btnSelectPressed = true;
     }
+    //if (adc_value >= 100 && adc_value <= 150)
+    //{
+
+    //}
 }
 // Einde Buttoncheck -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -67,37 +72,79 @@ ISR(PCINT1_vect) {
 #define B 11
 #define C 12
 #define D 13
-
+#define STEPSREV 4096
+Stepper stepper1 = Stepper(STEPSREV, A, C, B, D);
+#define NUMBER_OF_STEPS_PER_REV 512
 // Pin van de sensor
 int sensorPin = 2;
 // Zet de pirstate op LOW, aannemend dat er geen beweging is gedetecteerd wanneer de PIR start.
 int pirState = LOW;
 // Een variabele voor de pinstatus van de PIR.
 int sensorVal = 0;
+bool closingCondition = false;
+bool openingCondition = false;
+bool menuOpen = false;
+bool isOpen = false;
+bool cabClosed = true;
+bool cabOpen = false;
+bool menuOpenCondition = false;
+bool menuClosingCondition = false;
+bool menuIsOpen = false;
+bool timeCheck = true;
+
+const int pin_RS = 8; //weet niet wat RS,EN en BL betekenent maar hij doet t
+const int pin_EN = 9; 
+const int pin_d4 = 4; 
+const int pin_d5 = 5; 
+const int pin_d6 = 6; 
+const int pin_d7 = 7; 
+const int pin_BL = 10; 
+LiquidCrystal lcd( pin_RS,  pin_EN,  pin_d4,  pin_d5,  pin_d6,  pin_d7);
+
 
 void setup() {
+  Serial.begin(9600);
+  lcd.begin(16, 2); //16x2 display
+  lcd.setCursor(0,0);
+  lcd.print("a");
   setupMotor();
   setupSensor();
   setupScreenAndButtons();
 }
 
 void loop() {
-  if cabShouldOpen() {
-    if openCabinet(){
+   int x;
+ x = analogRead (0);
+ ButtonCheck(x); //button input
+ lcd.setCursor(0,0); //eerste letter eerste rij
+ lcd.print(x);
+ lcd.setCursor(0,1); 
+  if (cabShouldOpen()) {
+    if (openCabinet()){
       mechanicalError();
     }
   }
-  if cabShouldClose(){
-    if closeCabinet(){
+  if (cabShouldClose()){
+    if (closeCabinet()){
       mechanicalError();
     }
   }
-  if menuShouldOpen(){
+  if (menuShouldOpen()){
     openMenu();
   }
-  if menuShouldClose(){
+  if (menuShouldClose()){
     closeMenu();
   }
+  testingfunc();
+  btnUpPressed = false;
+  btnSelectPressed = false;
+  btnRightPressed = false;
+  btnDownPressed = false;
+  btnLeftPressed = false;
+  lcd.setCursor(0,1);
+  lcd.print(lastClosed);
+  lcd.setCursor(0,0);
+
 
   // Heb deze eruit gecomment want die kloppen net niet meer nu we niet weten of er een error is
   //opens the cabinet when needed.
@@ -131,15 +178,15 @@ The following fuctions setup different part of the machine.
 //Function to set up the motor.
 void setupMotor() {
   //initialiseer stepper motor
-  Stepper stepper1 = Stepper(STEPSREV, A, C, B, D); //Let op de volgorde
+  //Stepper stepper1 = Stepper(STEPSREV, A, C, B, D); //Let op de volgorde
   int delaytime = 3; // 3 ms, wordt niet gebruikt atm
-  #define NUMBER_OF_STEPS_PER_REV 512
+  //#define NUMBER_OF_STEPS_PER_REV 512
 
   pinMode(A,OUTPUT);
   pinMode(B,OUTPUT);
   pinMode(C,OUTPUT);
   pinMode(D,OUTPUT); // voor de motor
-  stepper1.setSpeed(4); //4 rpm
+  stepper1.setSpeed(6); //4 rpm
   
   //although the tutorials had some values, they were wrong so I had to look at it myself
   //these values are between the consecutive voltages so you need to use <
@@ -153,11 +200,7 @@ void setupMotor() {
   //const int voltSelect = 850;
   
   //Variables for the logic of opening and closing the cabinet.
-  bool menuOpen = false;
-  bool isOpen = false;
-  bool cabClosed = true;
-  bool cabOpen = false;
-  bool closingCondition = false;
+
   int mechanicalErrorDelay = 5000; //in ms
 }
 void stepOpen(){
@@ -196,8 +239,12 @@ The following functions determine if a mechanical action should be taken.
 bool sensorDetection(){
   sensorVal = digitalRead(sensorPin);
   if (sensorVal == HIGH){
+    //Serial.print(1);
+    sensorBool = true;
     return true;
   } else {
+    //Serial.print('rip');
+    sensorBool = false;
     return false;
   }
 }
@@ -209,16 +256,31 @@ bool fridgeJustOpened() {
 
 
 
-
+void testingfunc() {
+  if (btnDownPressed){
+    Serial.print(1);
+  }
+  if (btnUpPressed) {
+    Serial.print(2);
+  }
+  if (btnRightPressed){
+    Serial.print(3);
+  }
+  if (btnLeftPressed){
+    Serial.print(4);
+  }
+}
 //Function to check if there is a fruit that is almost expired.
 bool cabShouldOpen() {
-  OpeningCondition = (sensorDetection() && !isOpen);
-  return OpeningCondition;
+  timeCheck = (millis() - lastClosed >= 60000);
+  openingCondition = ((sensorBool && !isOpen && timeCheck) || !isOpen && !menuIsOpen && btnSelectPressed);
+  return openingCondition;
 }
 
 //Function to check if the button to close the cabinet has been pressed.
 bool cabShouldClose() {
   closingCondition = (btnDownPressed && !menuOpen && isOpen); //aanpasbaar
+  closingCondition = btnDownPressed;
   return closingCondition;
 }
 
@@ -265,24 +327,27 @@ void openMenu() {
   //het menu
 }
 
-void CloseMenu() {
+void closeMenu() {
   menuOpen = false;
 }
 
 
 //Function to try to close the cabinet every few seconds
 void mechanicalError() {
-  int tryCounter = 0;
-  while tryCounter < 3 {
-    delay(mechanicalErrorDelay);
-    if cabIsMoving() {
-      continue;
-    }
-    cabClosed = closeCabinet();
-    tryCounter++;
-    if cabClosed {
-      return false
-    }
-  }
-  return true
+  delay(3000);
 }
+//  int tryCounter = 0;
+//  while (tryCounter < 3) {
+//    //delay(mechanicalErrorDelay);
+//    delay(3000);
+//    if (cabIsMoving()) {
+//      continue;
+//    }
+//    cabClosed = closeCabinet();
+//    tryCounter++;
+//    if (cabClosed) {
+//      return false
+//    }
+//  }
+//  return true
+//}
