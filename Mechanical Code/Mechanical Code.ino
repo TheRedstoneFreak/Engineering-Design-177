@@ -1,5 +1,6 @@
 #include <LiquidCrystal.h>
 #include <Stepper.h>
+#include <DFR_LCD_Keypad.h>
 // Om de knoppen te meten
 bool btnUpPressed = false;
 bool btnDownPressed = false;
@@ -21,6 +22,42 @@ enum Buttons {
 };
 Buttons Current_Button = NONE;
 
+// Begin Buttoncheck, vgm zodat het niet raar vastloopt -----------------------------------------------------------------------------------------------------------------------------------------------
+void ButtonCheck(uint16_t adc_value) {
+    // The ISR will trigger when button is pressed and when it is let-go
+    if (adc_value >= DFR_LCD_KEYPAD_KEY_NONE_ADC_LOW && adc_value <= DFR_LCD_KEYPAD_KEY_NONE_ADC_HIGH) 
+    { 
+      Current_Button = NONE; 
+    }
+    if (adc_value >= 0 && adc_value <= 20) 
+    { 
+      Current_Button = RIGHT; 
+      btnRightPressed = true;
+    }
+    if (adc_value >= 600 && adc_value <= 650)  //354 or 355
+    { 
+      Current_Button = LEFT;
+      btnLeftPressed = true;
+    }
+    if (adc_value >= 200 && adc_value <= 250) // 119 or 120
+    { 
+      Current_Button = UP;
+      btnUpPressed = true;
+    }
+    if (adc_value >= 400 && adc_value <= 450) //250 or 251
+    { 
+      Current_Button = DOWN;
+      btnDownPressed = true;
+    }
+    // not working
+    if (adc_value >= 800 && adc_value <= 850) 
+    { 
+      Current_Button = SELECT;
+      btnSelectPressed = true;
+    }
+}
+// Einde Buttoncheck -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
 ISR(PCINT1_vect) {
    ButtonCheck(analogRead(0));
 }
@@ -39,30 +76,49 @@ int pirState = LOW;
 int sensorVal = 0;
 
 void setup() {
+  Serial.begin(9600);
   setupMotor();
   setupSensor();
   setupScreenAndButtons();
 }
 
 void loop() {
-  //opens the cabinet when needed.
-  if frideJustOpened() {
-    if cabShouldOpen() {
-    if !openCabinet() {
-      if testMechanicalError() {
-        mechanicalError();
-      }
+  if cabShouldOpen() {
+    if openCabinet(){
+      mechanicalError();
     }
+  }
+  if cabShouldClose(){
+    if closeCabinet(){
+      mechanicalError();
+    }
+  }
+  if menuShouldOpen(){
+    openMenu();
+  }
+  if menuShouldClose(){
+    closeMenu();
   }
 
+  // Heb deze eruit gecomment want die kloppen net niet meer nu we niet weten of er een error is
+  //opens the cabinet when needed.
+  //if frideJustOpened() {
+  //  if cabShouldOpen() {
+  //  if !openCabinet() {
+  //    if testMechanicalError() {
+  //      mechanicalError();
+  //    }
+  //  }
+  //}
+
   //closes the cabinet when needed
-  if cabShouldClose() {
-    if !closeCabinet() {
-      if testMechanicalError() {
-        mechanicalError();
-      }
-    }
-  }
+  //if cabShouldClose() {
+  //  if !closeCabinet() {
+  //    if testMechanicalError() {
+  //      mechanicalError();
+  //    }
+  //  }
+  //}
 
   //The rest should contain functions to controll the display, database and time.
 
@@ -98,6 +154,7 @@ void setupMotor() {
   //const int voltSelect = 850;
   
   //Variables for the logic of opening and closing the cabinet.
+  bool menuOpen = false;
   bool isOpen = false;
   bool cabClosed = true;
   bool cabOpen = false;
@@ -156,18 +213,19 @@ bool fridgeJustOpened() {
 
 //Function to check if there is a fruit that is almost expired.
 bool cabShouldOpen() {
-
+  OpeningCondition = (sensorDetection() && !isOpen);
+  return OpeningCondition;
 }
 
 //Function to check if the button to close the cabinet has been pressed.
 bool cabShouldClose() {
-  closingCondition = (btnSelectPressed || btnRightPressed); //aanpasbaar
+  closingCondition = (btnDownPressed && !menuOpen && isOpen); //aanpasbaar
   return closingCondition;
 }
 
 //Function to check if the cabinet is moving.
 bool cabIsMoving() {
-  
+
 }
 
 
@@ -177,7 +235,9 @@ The following functions undertake mechanical action.
 
 //Function to open the cabinet.
 bool openCabinet() {
+  isOpen = true;
   stepOpen();
+  lastOpened = millis();
 //if it didn't succeed:
   return false;
 }
@@ -185,9 +245,31 @@ bool openCabinet() {
 //Function to close the cabinet.
 bool closeCabinet() {
   stepClose();
+  lastClosed = millis();
+  isOpen = false;
 //if it didn't succeed:
   return false;
 }
+
+bool menuShouldOpen() {
+  menuOpenCondition = (isOpen && !menuOpen && btnSelectPressed);
+  return menuOpenCondition;
+}
+
+bool menuShouldClose() {
+  menuClosingCondition = (menuOpen && btnDownPressed); //hier moet wss nog iets bij gebaseerd op welk scherm het menu is
+  return menuClosingCondition;
+}
+
+void openMenu() {
+  menuOpen = true;
+  //het menu
+}
+
+void CloseMenu() {
+  menuOpen = false;
+}
+
 
 //Function to try to close the cabinet every few seconds
 void mechanicalError() {
