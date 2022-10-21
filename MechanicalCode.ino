@@ -7,10 +7,11 @@ bool btnDownPressed = false;
 bool btnRightPressed = false;
 bool btnLeftPressed = false;
 bool btnSelectPressed = false;
+bool sensorBool = true;
 
 // Tijd in ms wanneer hij voor het laatst is geopend
 int lastOpened = 0;
-int lastClosed = 0;
+int lastClosed = -60000;
 
 enum Buttons { 
   UP, 
@@ -89,6 +90,7 @@ bool cabOpen = false;
 bool menuOpenCondition = false;
 bool menuClosingCondition = false;
 bool menuIsOpen = false;
+bool timeCheck = true;
 
 const int pin_RS = 8; //weet niet wat RS,EN en BL betekenent maar hij doet t
 const int pin_EN = 9; 
@@ -139,6 +141,9 @@ void loop() {
   btnRightPressed = false;
   btnDownPressed = false;
   btnLeftPressed = false;
+  lcd.setCursor(0,1);
+  lcd.print(lastClosed);
+  lcd.setCursor(0,0);
 
 
   // Heb deze eruit gecomment want die kloppen net niet meer nu we niet weten of er een error is
@@ -181,7 +186,7 @@ void setupMotor() {
   pinMode(B,OUTPUT);
   pinMode(C,OUTPUT);
   pinMode(D,OUTPUT); // voor de motor
-  stepper1.setSpeed(4); //4 rpm
+  stepper1.setSpeed(6); //4 rpm
   
   //although the tutorials had some values, they were wrong so I had to look at it myself
   //these values are between the consecutive voltages so you need to use <
@@ -234,10 +239,12 @@ The following functions determine if a mechanical action should be taken.
 bool sensorDetection(){
   sensorVal = digitalRead(sensorPin);
   if (sensorVal == HIGH){
-    //Serial.print('sensor');
+    //Serial.print(1);
+    sensorBool = true;
     return true;
   } else {
     //Serial.print('rip');
+    sensorBool = false;
     return false;
   }
 }
@@ -265,7 +272,8 @@ void testingfunc() {
 }
 //Function to check if there is a fruit that is almost expired.
 bool cabShouldOpen() {
-  openingCondition = (sensorDetection() && !isOpen);
+  timeCheck = (millis() - lastClosed >= 60000);
+  openingCondition = ((sensorBool && !isOpen && timeCheck) || !isOpen && !menuIsOpen && btnSelectPressed);
   return openingCondition;
 }
 
