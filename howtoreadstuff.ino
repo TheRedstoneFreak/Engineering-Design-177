@@ -68,34 +68,8 @@ digitalWrite(C,c);
 digitalWrite(D,d);
 }
 
-void onestep(){ 
-//letterlijk magie, snap niet hoe dit de motor aan de praat krijgt
-// sowieso bestaat er gewoon een library voor een motor draaien die ik hier ook gebruik
-// als we dit zouden kunnen gebruiken zouden de ledjes miss niet aan hoeven? Maar dit is eigenlijk allemaal gelul want ik snap niks van deze code
-int delaytime;
-delaytime = 3;
-write(1,0,0,0);
-delay(delaytime);
-write(1,1,0,0);
-delay(delaytime);
-write(0,1,0,0);
-delay(delaytime);
-write(0,1,1,0);
-delay(delaytime);
-write(0,0,1,0);
-delay(delaytime);
-write(0,0,1,1);
-delay(delaytime);
-write(0,0,0,1);
-delay(delaytime);
-write(1,0,0,1);
-delay(delaytime);
-}
-
-
 void bigstep(){
   stepper1.step(2048);
-
 }
 
 void loop() {

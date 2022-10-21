@@ -83,6 +83,7 @@ void setup(){
   delay(1000);
   lcd.clear();
   cli();
+  unsigned long original_time = millis(); //Start time since arduino is on
   
   // Setup Pin Change Interrupt for Buttons
   PCICR =0x02;                  // Enable 'PCIE1' bit of PCICR Pin Change Interrupt the PCINT1 interrupt
@@ -122,6 +123,9 @@ void loop()
       food_data();
       break;
   }
+
+  check_timers();
+
    
    map <string,int> :: iterator iter;
    for (iter = compartment.begin(); iter != compartment.end(); iter++)
@@ -146,6 +150,7 @@ void loop()
       }
    
    }
+   
 }
          
          
@@ -742,6 +747,16 @@ void food_data() {
   
 }
 
+
+void get_current_time() {
+  unsigned long current_time = millis()
+  return current_time  
+}
+
+void check_timers() {
+  // ga de current list af
+  // Check of de tijd voorbij is dmv starttijd + looptijd = current_time
+  
 void start_timer(product) { //dit moet bij product komen maar kan dan met get_current time
  unsigned long start_time = millis();
  return start_time;
@@ -769,6 +784,7 @@ bool timer_done() { // Returns true als de tijd voorbij is
 void get_current_time() {
   unsigned long current_time = millis();
   return current_time    
+  
 }
 
 // Begin Buttoncheck, vgm zodat het niet raar vastloopt -----------------------------------------------------------------------------------------------------------------------------------------------
