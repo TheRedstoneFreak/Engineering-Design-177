@@ -135,7 +135,6 @@ void loop() {
   if (menuShouldClose()){
     closeMenu();
   }
-  testingfunc();
   btnUpPressed = false;
   btnSelectPressed = false;
   btnRightPressed = false;
@@ -256,31 +255,16 @@ bool fridgeJustOpened() {
 
 
 
-void testingfunc() {
-  if (btnDownPressed){
-    Serial.print(1);
-  }
-  if (btnUpPressed) {
-    Serial.print(2);
-  }
-  if (btnRightPressed){
-    Serial.print(3);
-  }
-  if (btnLeftPressed){
-    Serial.print(4);
-  }
-}
 //Function to check if there is a fruit that is almost expired.
 bool cabShouldOpen() {
   timeCheck = (millis() - lastClosed >= 60000);
-  openingCondition = ((sensorBool && !isOpen && timeCheck) || !isOpen && !menuIsOpen && btnSelectPressed);
+  openingCondition = ((sensorBool && !isOpen && timeCheck) || !isOpen && !menuOpen && btnSelectPressed);
   return openingCondition;
 }
 
 //Function to check if the button to close the cabinet has been pressed.
 bool cabShouldClose() {
   closingCondition = (btnDownPressed && !menuOpen && isOpen); //aanpasbaar
-  closingCondition = btnDownPressed;
   return closingCondition;
 }
 
@@ -296,6 +280,7 @@ The following functions undertake mechanical action.
 
 //Function to open the cabinet.
 bool openCabinet() {
+  Serial.println(millis()-lastClosed);
   isOpen = true;
   stepOpen();
   lastOpened = millis();
