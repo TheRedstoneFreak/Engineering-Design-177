@@ -3,9 +3,6 @@
 
 #include <LiquidCrystal.h>
 #include <DFR_LCD_Keypad.h>
-#include<iostream>
-#include<map>
-#include<string>
 
 #define JUMPING_GAME 1
 #define PLAYING_MUSIC 2
@@ -31,32 +28,39 @@ bool btnDownPressed = false;
 bool btnRightPressed = false;
 bool btnLeftPressed = false;
 bool btnSelectPressed = false;
+bool noBtnPressed = true;
 
-map<string, int> food;
-   food["Apples"] = 30; //days
-   food["Asparagus"] = 4;
-   food["Avocadoes"] = 3;
-   food["Beans"] = 5;
-   food["Berries"] = 3;
-   food["Broccoli"] = 6;
-   food["Carrots"] = 80;
-   food["Capsicum"] = 12;
-   food["Cauliflower"] = 12;
-   food["Celery"] = 25;
-   food["Corn"] = 3;
-   food["Citrus"] = 16;
-   food["Cucumber"] = 11;
-   food["Eggplant"] = 11;
-   food["Lettuce"] = 11;
-   food["Kiwi"] = 7;
-   food["Mushrooms"] = 11;
-   food["Onions"] = 80;
-   food["Peaches"] = 3;
-   food["Pears"] = 14;
-   food["Peas"] = 6;
-   food["Strawberries"] = 3;
-   food["Tomatoes"] = 6;
+int Apples = 30;
+int Asparagus = 30;
+int Avocadoes = 30;
+int Beans = 5;
+int Berries = 3;
+int Broccoli = 6;
+int Carrots = 80;
+int Capsicum = 12;
+int Cauliflower = 12;
+int Celery = 25;
+int Corn = 3;
+int Citrus = 16;
+int Cucumber = 11;
+int Eggplant = 11;
+int Lettuce = 11;
+int Kiwi = 7;
+int Mushrooms = 11;
+int Onions = 80;
+int Peaches = 3;
+int Pears = 14;
+int Peas = 6;
+int Strawberries = 3;
+int Tomatoes = 6;
 
+
+
+
+int Compartment_1_date = 0;
+int Compartment_2_date = 0;
+String Compartment_1 = "Empty";
+String Compartment_2 = "Empty";
 
 enum Buttons { 
   UP, 
@@ -67,6 +71,44 @@ enum Buttons {
   NONE 
 };
 Buttons Current_Button = NONE;
+
+// Begin Buttoncheck, vgm zodat het niet raar vastloopt -----------------------------------------------------------------------------------------------------------------------------------------------
+void ButtonCheck(uint16_t adc_value) {
+    // The ISR will trigger when button is pressed and when it is let-go
+    if (adc_value >= DFR_LCD_KEYPAD_KEY_NONE_ADC_LOW && adc_value <= DFR_LCD_KEYPAD_KEY_NONE_ADC_HIGH) 
+    { 
+      Current_Button = NONE;
+      noBtnPressed = true;
+    }
+    if (adc_value >= 0 && adc_value <= 20) 
+    { 
+      Current_Button = RIGHT; 
+      btnRightPressed = true;
+    }
+    if (adc_value >= 600 && adc_value <= 650)  //354 or 355
+    { 
+      Current_Button = LEFT;
+      btnLeftPressed = true;
+    }
+    if (adc_value >= 200 && adc_value <= 250) // 119 or 120
+    { 
+      Current_Button = UP;
+      btnUpPressed = true;
+    }
+    if (adc_value >= 400 && adc_value <= 450) //250 or 251
+    { 
+      Current_Button = DOWN;
+      btnDownPressed = true;
+    }
+    // not working
+    if (adc_value >= 800 && adc_value <= 850) 
+    { 
+      Current_Button = SELECT;
+      btnSelectPressed = true;
+    }
+}
+// Einde Buttoncheck -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
 
 ISR(PCINT1_vect) {
    ButtonCheck(analogRead(0));
@@ -127,10 +169,8 @@ void loop()
   check_timers();
 
    
-   map <string,int> :: iterator iter;
-   for (iter = compartment.begin(); iter != compartment.end(); iter++)
-   {
-    if ((*iter).second <= get_current_time()) {
+   
+    if (Compartment_1_date <= get_current_time()) {
       while (noBtnPressed) {
       lcd.setCursor(0,0);
       lcd.print((*iter).first); 
@@ -140,7 +180,7 @@ void loop()
       }
        compartment.erase((*iter).first)
    }
-      if ((*iter).second - 86 400 000 <= get_current_time()) { #1 dag
+      if (Compartment_1_date - 86 400 000 <= get_current_time()) { //1 dag
       while (noBtnPressed) {
       lcd.setCursor(0,0);
       lcd.print((*iter).first); 
@@ -294,7 +334,8 @@ void fruit_menu() {
         unsigned long current_time = millis();
         unsigned long start_time = get_current_time();
         unsigned long time_left = 30 * 86400000;
-        compartment["Apple"] = start_time + time_left;
+        Compartment_1 = "Apple";
+        Compartment_1_date = start_time + time_left;
         
       break;
         
@@ -311,7 +352,8 @@ void fruit_menu() {
         unsigned long current_time = millis();
         unsigned long start_time = get_current_time();
         unsigned long time_left = 3 * 86400000;
-        compartment["Avocado"] = start_time + time_left;
+        Compartment_1 = "Avocado";
+        Compartment_1_date = start_time + time_left;
       }
       break;
         
@@ -328,7 +370,8 @@ void fruit_menu() {
         unsigned long current_time = millis();
         unsigned long start_time = get_current_time();
         unsigned long time_left = 3 * 86400000;
-        compartment["Berries"] = start_time + time_left;
+        Compartment_1 = "Berries";
+        Compartment_1_date = start_time + time_left;
       }
       break;
         
@@ -345,7 +388,8 @@ void fruit_menu() {
         unsigned long current_time = millis();
         unsigned long start_time = get_current_time();
         unsigned long time_left = 16 * 86400000;
-        compartment["Citrus"] = start_time + time_left;
+        Compartment_1 = "Citrus";
+        Compartment_1_date = start_time + time_left;
       }
       break;
         
@@ -362,7 +406,8 @@ void fruit_menu() {
         unsigned long current_time = millis();
         unsigned long start_time = get_current_time();
         unsigned long time_left = 7 * 86400000;
-        compartment["Kiwi fruit"] = start_time + time_left;
+        Compartment_1 = "Kiwi";
+        Compartment_1_date = start_time + time_left;
       }
       break;
         
@@ -379,7 +424,8 @@ void fruit_menu() {
         unsigned long current_time = millis();
         unsigned long start_time = get_current_time();
         unsigned long time_left = 3 * 86400000;
-        compartment["Peaches"] = start_time + time_left;
+        Compartment_1 = "Peaches";
+        Compartment_1_date = start_time + time_left;
       }
       break;
         
@@ -396,7 +442,8 @@ void fruit_menu() {
         unsigned long current_time = millis();
         unsigned long start_time = get_current_time();
         unsigned long time_left = 14 * 86400000;
-        compartment["Pears"] = start_time + time_left;
+        Compartment_1 = "Pears";
+        Compartment_1_date = start_time + time_left;
       }
       break;
         
@@ -413,7 +460,8 @@ void fruit_menu() {
         unsigned long current_time = millis();
         unsigned long start_time = get_current_time();
         unsigned long time_left = 3 * 86400000;
-        compartment["Strawberries"] = start_time + time_left;
+        Compartment_1 = "Strawberries";
+        Compartment_1_date = start_time + time_left;
       }
       break;
         
@@ -451,7 +499,8 @@ void vegetable_menu() {
         unsigned long current_time = millis();
         unsigned long start_time = get_current_time();
         unsigned long time_left = 4 * 86400000;
-        compartment["Asparagus"] = start_time + time_left;
+        Compartment_2 = "Asparagus";
+        Compartment_2_date = start_time + time_left;
       } 
       break;
     case 2:
@@ -467,7 +516,8 @@ void vegetable_menu() {
         unsigned long current_time = millis();
         unsigned long start_time = get_current_time();
         unsigned long time_left = 5 * 86400000;
-        compartment["Beans"] = start_time + time_left;
+        Compartment_2 = "Beans";
+        Compartment_2_date = start_time + time_left;
       }
       break; 
       
@@ -484,7 +534,8 @@ void vegetable_menu() {
         unsigned long current_time = millis();
         unsigned long start_time = get_current_time();
         unsigned long time_left = 6 * 86400000;
-        compartment["Broccoli"] = start_time + time_left;
+        Compartment_2 = "Broccoli";
+        Compartment_2_date = start_time + time_left;
       } 
       break;
     case 4:
@@ -500,7 +551,8 @@ void vegetable_menu() {
         unsigned long current_time = millis();
         unsigned long start_time = get_current_time();
         unsigned long time_left = 30 * 86400000;
-        compartment["Carrots"] = start_time + time_left;
+        Compartment_2 = "Carrots";
+        Compartment_2_date = start_time + time_left;
       }
       break;
         
@@ -517,7 +569,8 @@ void vegetable_menu() {
         unsigned long current_time = millis();
         unsigned long start_time = get_current_time();
         unsigned long time_left = 12 * 86400000;
-        compartment["Capsicum"] = start_time + time_left;
+        Compartment_2 = "Capsicum";
+        Compartment_2_date = start_time + time_left;
       } 
       break;
     case 6:
@@ -533,7 +586,8 @@ void vegetable_menu() {
         unsigned long current_time = millis();
         unsigned long start_time = get_current_time();
         unsigned long time_left = 12 * 86400000;
-        compartment["Cauliflower"] = start_time + time_left;
+        Compartment_2 = "Cauliflower";
+        Compartment_2_date = start_time + time_left;v
         
       }
       break;
@@ -551,7 +605,8 @@ void vegetable_menu() {
         unsigned long current_time = millis();
         unsigned long start_time = get_current_time();
         unsigned long time_left = 25 * 86400000;
-        compartment["Celery"] = start_time + time_left;
+        Compartment_2 = "Celery";
+        Compartment_2_date = start_time + time_left;
          
       } 
       break;
@@ -568,7 +623,8 @@ void vegetable_menu() {
         unsigned long current_time = millis();
         unsigned long start_time = get_current_time();
         unsigned long time_left = 3 * 86400000;
-        compartment["Corn"] = start_time + time_left;
+        Compartment_2 = "Corn";
+        Compartment_2_date = start_time + time_left;
       }
       break;
 
@@ -585,7 +641,8 @@ void vegetable_menu() {
         unsigned long current_time = millis();
         unsigned long start_time = get_current_time();
         unsigned long time_left = 11 * 86400000;
-        compartment["Cucumber"] = start_time + time_left;
+        Compartment_2 = "Cucumber";
+        Compartment_2_date = start_time + time_left;
       }
       break; 
       
@@ -602,7 +659,8 @@ void vegetable_menu() {
         unsigned long current_time = millis();
         unsigned long start_time = get_current_time();
         unsigned long time_left = 11 * 86400000;
-        compartment["Eggplant"] = start_time + time_left;
+        Compartment_2 = "Eggplant";
+        Compartment_2_date = start_time + time_left;
         
       } 
       break;
@@ -619,7 +677,8 @@ void vegetable_menu() {
         unsigned long current_time = millis();
         unsigned long start_time = get_current_time();
         unsigned long time_left = 11 * 86400000;
-        compartment["Lettuce"] = start_time + time_left;
+        Compartment_2 = "Lettuce";
+        Compartment_2_date = start_time + time_left;
       }
       break;
         
@@ -636,7 +695,8 @@ void vegetable_menu() {
         unsigned long current_time = millis();
         unsigned long start_time = get_current_time();
         unsigned long time_left = 11 * 86400000;
-        compartment["Mushrooms"] = start_time + time_left;
+        Compartment_2 = "Mushrooms";
+        Compartment_2_date = start_time + time_left;
       } 
       break;
     case 13:
@@ -652,7 +712,8 @@ void vegetable_menu() {
         unsigned long current_time = millis();
         unsigned long start_time = get_current_time();
         unsigned long time_left = 6 * 86400000;
-        compartment["Peas"] = start_time + time_left;
+        Compartment_2 = "Peas";
+        Compartment_2_date = start_time + time_left;
       }
       break;
         
@@ -669,7 +730,8 @@ void vegetable_menu() {
         unsigned long current_time = millis();
         unsigned long start_time = get_current_time();
         unsigned long time_left = 6 * 86400000;
-        compartment["Tomatoes"] = start_time + time_left;
+        Compartment_2 = "Tomatoes";
+        Compartment_2_date = start_time + time_left;
 
       } 
       break;
@@ -787,39 +849,3 @@ void get_current_time() {
   
 }
 
-// Begin Buttoncheck, vgm zodat het niet raar vastloopt -----------------------------------------------------------------------------------------------------------------------------------------------
-void ButtonCheck(uint16_t adc_value) {
-    // The ISR will trigger when button is pressed and when it is let-go
-    if (adc_value >= DFR_LCD_KEYPAD_KEY_NONE_ADC_LOW && adc_value <= DFR_LCD_KEYPAD_KEY_NONE_ADC_HIGH) 
-    { 
-      Current_Button = NONE;
-      noBtnPressed = true;
-    }
-    if (adc_value >= 0 && adc_value <= 20) 
-    { 
-      Current_Button = RIGHT; 
-      btnRightPressed = true;
-    }
-    if (adc_value >= 600 && adc_value <= 650)  //354 or 355
-    { 
-      Current_Button = LEFT;
-      btnLeftPressed = true;
-    }
-    if (adc_value >= 200 && adc_value <= 250) // 119 or 120
-    { 
-      Current_Button = UP;
-      btnUpPressed = true;
-    }
-    if (adc_value >= 400 && adc_value <= 450) //250 or 251
-    { 
-      Current_Button = DOWN;
-      btnDownPressed = true;
-    }
-    // not working
-    if (adc_value >= 800 && adc_value <= 850) 
-    { 
-      Current_Button = SELECT;
-      btnSelectPressed = true;
-    }
-}
-// Einde Buttoncheck -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
